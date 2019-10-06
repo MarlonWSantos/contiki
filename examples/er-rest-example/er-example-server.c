@@ -42,6 +42,9 @@
 #include "contiki.h"
 #include "contiki-net.h"
 #include "rest-engine.h"
+//Ariker> add this line
+//#include "../apps/powertrace/powertrace.h"
+#include "powertrace.h"
 
 #if PLATFORM_HAS_BUTTON
 #include "dev/button-sensor.h"
@@ -79,15 +82,9 @@ extern resource_t res_leds, res_toggle;
 #include "dev/light-sensor.h"
 extern resource_t res_light;
 #endif
+/*
 #if PLATFORM_HAS_BATTERY
 #include "dev/battery-sensor.h"
-extern resource_t res_battery;
-#endif
-#if PLATFORM_HAS_TEMPERATURE
-#include "dev/temperature-sensor.h"
-extern resource_t res_temperature;
-#endif
-/*
 extern resource_t res_battery;
 #endif
 #if PLATFORM_HAS_RADIO
@@ -106,10 +103,21 @@ AUTOSTART_PROCESSES(&er_example_server);
 PROCESS_THREAD(er_example_server, ev, data)
 {
   PROCESS_BEGIN();
+// Ariker> Battery Settings
+unsigned seconds=60*5;// warning: if this variable is changed, then the kinect variable the count the minutes should be changed
+double fixed_perc_energy = 0.2;// 0 - 1
+unsigned variation = 2;//0 - 99
+
+//Ariker> add this line
+powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
+//powertrace_start(CLOCK_SECOND * 10);
+
 
   PROCESS_PAUSE();
 
   PRINTF("Starting Erbium Example Server\n");
+
+
 
 #ifdef RF_CHANNEL
   PRINTF("RF channel: %u\n", RF_CHANNEL);
@@ -147,15 +155,11 @@ PROCESS_THREAD(er_example_server, ev, data)
   rest_activate_resource(&res_light, "sensors/light"); 
   SENSORS_ACTIVATE(light_sensor);  
 #endif
+/*
 #if PLATFORM_HAS_BATTERY
   rest_activate_resource(&res_battery, "sensors/battery");  
   SENSORS_ACTIVATE(battery_sensor);  
 #endif
-#if PLATFORM_HAS_TEMPERATURE
-  rest_activate_resource(&res_temperature, "sensors/temperature");  
-  SENSORS_ACTIVATE(temperature_sensor);  
-#endif
-/*
 #if PLATFORM_HAS_RADIO
   rest_activate_resource(&res_radio, "sensors/radio");  
   SENSORS_ACTIVATE(radio_sensor);  
