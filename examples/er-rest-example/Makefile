@@ -35,6 +35,7 @@ APPS+=powertrace
 #CUSTOM_RULE_C_TO_OBJECTDIR_O = 1
 #CUSTOM_RULE_S_TO_OBJECTDIR_O = 1
 
+
 CONTIKI_WITH_IPV6 = 1
 include $(CONTIKI)/Makefile.include
 
