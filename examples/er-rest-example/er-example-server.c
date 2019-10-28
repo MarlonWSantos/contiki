@@ -97,6 +97,24 @@ extern resource_t res_sht11;
 #endif
 */
 
+
+/*-------------------------------------------------*/
+PROCESS(test_button_process, "Test button");
+AUTOSTART_PROCESSES(&test_button_process);
+/*-------------------------------------------------*/
+
+PROCESS_THREAD(test_button_process, ev, data)
+{
+PROCESS_BEGIN();
+SENSORS_ACTIVATE(button_sensor);
+while(1) {
+PROCESS_WAIT_EVENT_UNTIL((ev==sensors_event) &&
+(data == &button_sensor));
+printf("I pushed the button!\n");
+}
+PROCESS_END();
+
+
 PROCESS(er_example_server, "Erbium Example Server");
 AUTOSTART_PROCESSES(&er_example_server);
 
