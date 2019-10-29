@@ -146,7 +146,8 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
 /*  rest_activate_resource(&res_chunks, "test/chunks"); */
 /*  rest_activate_resource(&res_separate, "test/separate"); */
   rest_activate_resource(&res_push, "test/push");
-  rest_activate_resource(&res_event, "sensors/button"); 
+  rest_activate_resource(&res_event, "sensors/button");
+
 /*  rest_activate_resource(&res_sub, "test/sub"); */
 /*  rest_activate_resource(&res_b1_sep_b2, "test/b1sepb2"); */
 #if PLATFORM_HAS_LEDS
@@ -171,7 +172,7 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
   SENSORS_ACTIVATE(sht11_sensor);  
 #endif
 */
-
+SENSORS_ACTIVATE(button_sensor);
   /* Define application-specific events here. */
   while(1) {
     PROCESS_WAIT_EVENT();
@@ -191,10 +192,7 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
   PROCESS_END();
 }
 
-/*-------------------------------------------------*/
-//PROCESS(test_button_process, "Test button");
-//AUTOSTART_PROCESSES(&test_button_process);
-/*-------------------------------------------------*/
+
 
 PROCESS_THREAD(test_button_process, ev, data)
 {
