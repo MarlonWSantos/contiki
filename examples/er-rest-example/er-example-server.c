@@ -99,8 +99,14 @@ extern resource_t res_sht11;
 
 
 PROCESS(er_example_server, "Erbium Example Server");
+
+########################################################################################################################
+Modificações
+
 PROCESS(test_button_process, "Test button");
 AUTOSTART_PROCESSES(&er_example_server,&test_button_process);
+
+########################################################################################################################
 
 PROCESS_THREAD(er_example_server, ev, data)
 {
@@ -172,7 +178,11 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
   SENSORS_ACTIVATE(sht11_sensor);  
 #endif
 */
+########################################################################################################################
+Modificação
+
 SENSORS_ACTIVATE(button_sensor);
+########################################################################################################################
   /* Define application-specific events here. */
   while(1) {
     PROCESS_WAIT_EVENT();
@@ -192,7 +202,8 @@ SENSORS_ACTIVATE(button_sensor);
   PROCESS_END();
 }
 
-
+########################################################################################################################
+Modificações
 
 PROCESS_THREAD(test_button_process, ev, data)
 {
@@ -205,3 +216,4 @@ printf("I pushed the button!\n");
 }
 PROCESS_END();
 }
+########################################################################################################################
