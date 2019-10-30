@@ -45,6 +45,10 @@
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
 #include "powertrace.h"
+//###############################################################################
+#define SECONDS 5
+//###############################################################################
+
 
 #if PLATFORM_HAS_BUTTON
 #include "dev/button-sensor.h"
@@ -96,9 +100,13 @@ extern resource_t res_radio;
 extern resource_t res_sht11;
 #endif
 */
+/*-------------------------------------------------*/
+PROCESS(test_timer_process, "Test timer");
+//AUTOSTART_PROCESSES(&test_timer_process);
+/*-------------------------------------------------*/
 
 PROCESS(er_example_server, "Erbium Example Server");
-AUTOSTART_PROCESSES(&er_example_server);
+AUTOSTART_PROCESSES(&er_example_server,&test_timer_process);
 
 PROCESS_THREAD(er_example_server, ev, data)
 {
@@ -188,3 +196,20 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
 
   PROCESS_END();
 }
+
+//###############################################################################
+PROCESS_THREAD(test_timer_process, ev, data){
+	PROCESS_BEGIN();
+	static struct etimer et;
+	while(1) {
+		etimer_set(&et, CLOCK_SECOND*SECONDS);
+		PROCESS_WAIT_EVENT();
+		if(etimer_expired(&et)) {
+		printf("Hello world!\n");
+		etimer_reset(&et);
+		}
+	}
+PROCESS_END();
+}
+//###############################################################################
+
