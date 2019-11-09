@@ -42,11 +42,13 @@
 #include "contiki.h"
 #include "contiki-net.h"
 #include "rest-engine.h"
+#include "sys/node-id.h"
+
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
 #include "powertrace.h"
 //###############################################################################
-#define SECONDS 5
+#define SECONDS 60
 //###############################################################################
 
 
@@ -70,6 +72,12 @@
  * Resources to be activated need to be imported through the extern keyword.
  * The build system automatically compiles the resources in the corresponding sub-directory.
  */
+unsigned event_count=0;//0 - 99
+
+	int id_nodes_ev[5]= {1,2,3,4,5};
+
+
+
 extern resource_t
   res_hello,
   res_mirror,
@@ -115,6 +123,7 @@ PROCESS_THREAD(er_example_server, ev, data)
 unsigned seconds=60*5;// warning: if this variable is changed, then the kinect variable the count the minutes should be changed
 double fixed_perc_energy = 0.2;// 0 - 1
 unsigned variation = 2;//0 - 99
+
 
 //Ariker> add this line
 powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
@@ -204,8 +213,14 @@ PROCESS_THREAD(test_timer_process, ev, data){
 	while(1) {
 		etimer_set(&et, CLOCK_SECOND*SECONDS);
 		PROCESS_WAIT_EVENT();
+     		printf("Numero do evento %d\n", ev);
+		printf("ID do mote: %d\n",node_id);
+		event_count++;
+		if(node_id == id_nodes_ev[event_count]){
+		printf("Mote escolhido\n");		
+		}
 		if(etimer_expired(&et)) {
-		printf("Hello world!\n");
+		printf("etimer expirou\n");
 		etimer_reset(&et);
 		}
 	}
