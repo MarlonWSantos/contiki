@@ -44,6 +44,7 @@
 #include "rest-engine.h"
 #include "sys/node-id.h"
 
+
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
 #include "powertrace.h"
@@ -60,7 +61,7 @@
 #if DEBUG
 #include <stdio.h>
 #define PRINTF(...) printf(__VA_ARGS__)
-#define PRINT6ADDR(addr) PRINTF("[%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x]", ((uint8_t *)addr)[0], ((uint8_t *)addr)[1], ((uint8_t *)addr)[2], ((uint8_t *)addr)[3], ((uint8_t *)addr)[4], ((uint8_t *)addr)[5], ((uint8_t *)addr)[6], ((uint8_t *)addr)[7], ((uint8_t *)addr)[8], ((uint8_t *)addr)[9], ((uint8_t *)addr)[10], ((uint8_t *)addr)[11], ((uint8_t *)addr)[12], ((uint8_t *)addr)[13], ((uint8_t *)addr)[14], ((uint8_t *)addr)[15])
+define PRINT6ADDR(addr) PRINTF("[%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x]", ((uint8_t *)addr)[0], ((uint8_t *)addr)[1], ((uint8_t *)addr)[2], ((uint8_t *)addr)[3], ((uint8_t *)addr)[4], ((uint8_t *)addr)[5], ((uint8_t *)addr)[6], ((uint8_t *)addr)[7], ((uint8_t *)addr)[8], ((uint8_t *)addr)[9], ((uint8_t *)addr)[10], ((uint8_t *)addr)[11], ((uint8_t *)addr)[12], ((uint8_t *)addr)[13], ((uint8_t *)addr)[14], ((uint8_t *)addr)[15])
 #define PRINTLLADDR(lladdr) PRINTF("[%02x:%02x:%02x:%02x:%02x:%02x]", (lladdr)->addr[0], (lladdr)->addr[1], (lladdr)->addr[2], (lladdr)->addr[3], (lladdr)->addr[4], (lladdr)->addr[5])
 #else
 #define PRINTF(...)
@@ -72,10 +73,18 @@
  * Resources to be activated need to be imported through the extern keyword.
  * The build system automatically compiles the resources in the corresponding sub-directory.
  */
+
+//Contador de eventos
 unsigned event_count=0;//0 - 99
 
-	int id_nodes_ev[5]= {1,2,3,4,5};
+	//Vetor com os valores do motes que serão indicados, o valor "-1" equivale a null entre os motes
+	int id_nodes_ev[3][3]= {{2,3,-1}, //Motes escolhidos no evento 1 (2 e 3)
+							{-1,3,4}, //Motes escolhidos no evento 2 (3 e 4)
+							{2,-1,4}};//Motes escolhidos no evento 3 (2 e 4)
 
+
+	//Calcula o número de motes em cada evento, dividindo o tamanho total do vetor (9) pelo número de elemtos na linha[0]
+	int	numero_Motes=sizeof(id_nodes_ev)/sizeof(id_nodes_ev[0]); //Resultado = 3
 
 
 extern resource_t
@@ -213,12 +222,29 @@ PROCESS_THREAD(test_timer_process, ev, data){
 	while(1) {
 		etimer_set(&et, CLOCK_SECOND*SECONDS);
 		PROCESS_WAIT_EVENT();
-     		printf("Numero do evento %d\n", ev);
+     
 		printf("ID do mote: %d\n",node_id);
-		event_count++;
-		if(node_id == id_nodes_ev[event_count]){
-		printf("Mote escolhido\n");		
+
+		 	
+		printf("Numero de motes por evento: %d\n",numero_Motes);
+	
+			//Indicador de cada posição no vetor de motes
+		int mote;
+	
+			//Lê cada posição do vetor com os valores dos motes escolhidos até o último mote de cada evento
+		for(mote=0;mote<numero_Motes;mote++){
+
+				//Se o valor do mote for igual ao valor de um dos motes indicados no vetor		
+			if(node_id == id_nodes_ev[event_count][mote]){
+
+				//Exibe que este mote foi escolhido pelo vetor de eventos
+			printf("Mote escolhido\n");		
+			}
 		}
+				//Incrementa 1 para o evento no próximo minuto
+			event_count++;
+
+
 		if(etimer_expired(&et)) {
 		printf("etimer expirou\n");
 		etimer_reset(&et);
