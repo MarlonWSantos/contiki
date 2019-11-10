@@ -43,7 +43,7 @@
 #include "contiki-net.h"
 #include "rest-engine.h"
 #include "sys/node-id.h"
-
+#include "array.h"
 
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
@@ -78,13 +78,13 @@ define PRINT6ADDR(addr) PRINTF("[%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%0
 unsigned event_count=0;//0 - 99
 
 	//Vetor com os valores do motes que serão indicados, o valor "-1" equivale a null entre os motes
-	int id_nodes_ev[3][3]= {{2,3,-1}, //Motes escolhidos no evento 1 (2 e 3)
-							{-1,3,4}, //Motes escolhidos no evento 2 (3 e 4)
-							{2,-1,4}};//Motes escolhidos no evento 3 (2 e 4)
+//	int id_nodes_ev[3][3]= {{2,3,-1}, //Motes escolhidos no evento 1 (2 e 3)
+//							{-1,3,4}, //Motes escolhidos no evento 2 (3 e 4)
+//							{2,-1,4}};//Motes escolhidos no evento 3 (2 e 4)
 
 
 	//Calcula o número de motes em cada evento, dividindo o tamanho total do vetor (9) pelo número de elemtos na linha[0]
-	int	numero_Motes=sizeof(id_nodes_ev)/sizeof(id_nodes_ev[0]); //Resultado = 3
+//	int	numero_Motes=sizeof(id_nodes_ev)/sizeof(id_nodes_ev[0]); //Resultado = 3
 
 
 extern resource_t
@@ -223,11 +223,8 @@ PROCESS_THREAD(test_timer_process, ev, data){
 		etimer_set(&et, CLOCK_SECOND*SECONDS);
 		PROCESS_WAIT_EVENT();
      
-		printf("ID do mote: %d\n",node_id);
-
 		 	
-		printf("Numero de motes por evento: %d\n",numero_Motes);
-	
+			
 			//Indicador de cada posição no vetor de motes
 		int mote;
 	
@@ -239,6 +236,8 @@ PROCESS_THREAD(test_timer_process, ev, data){
 
 				//Exibe que este mote foi escolhido pelo vetor de eventos
 			printf("Mote escolhido\n");		
+			printf("Numero de motes por evento: %d\n",numero_Motes);
+
 			}
 		}
 				//Incrementa 1 para o evento no próximo minuto
