@@ -43,7 +43,7 @@
 #include "contiki-net.h"
 #include "rest-engine.h"
 #include "sys/node-id.h"
-#include "array.h"
+#include "Eventos.h"
 
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
