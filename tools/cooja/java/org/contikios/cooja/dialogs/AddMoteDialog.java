@@ -488,6 +488,11 @@ public class AddMoteDialog extends JDialog {
             Position newPosition = newMotes.get(i).getInterfaces().getPosition();
             if (newPosition != null) {
               double[] newPositionArray = positioner.getNextPosition();
+								//Exibe as coordenadas dos motes
+							System.out.println("Coordenada X "+newPositionArray[0]);
+							System.out.println("Coordenada Y "+newPositionArray[1]);
+							System.out.println("Coordenada Z "+newPositionArray[2]);
+
               if (newPositionArray.length >= 3) {
                 newPosition.setCoordinates(newPositionArray[0],
                     newPositionArray[1], newPositionArray[2]);
@@ -513,6 +518,7 @@ public class AddMoteDialog extends JDialog {
           }
           for (Mote m: newMotes) {
             MoteID moteID = m.getInterfaces().getMoteID();
+						
             if (moteID != null) {
               moteID.setMoteID(nextMoteID++);
             } else {
