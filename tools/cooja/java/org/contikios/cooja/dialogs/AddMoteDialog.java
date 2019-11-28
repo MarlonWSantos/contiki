@@ -70,12 +70,34 @@ import org.contikios.cooja.Simulation;
 import org.contikios.cooja.interfaces.MoteID;
 import org.contikios.cooja.interfaces.Position;
 
+//#############################################################################
+
+
+  //Permite salvar em arquivo os outputs do System.out.println
+import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+//###############################################################################
+
+
 /**
  * A dialog for adding motes.
  *
  * @author Fredrik Osterlind
  */
 public class AddMoteDialog extends JDialog {
+
+//#############################################################################
+
+  //Contador de motes criados
+       public static int count_motes=1;
+
+
+//#############################################################################
+
+
+
 
   private static final long serialVersionUID = 1L;
   private static Logger logger = Logger.getLogger(AddMoteDialog.class);
@@ -488,10 +510,20 @@ public class AddMoteDialog extends JDialog {
             Position newPosition = newMotes.get(i).getInterfaces().getPosition();
             if (newPosition != null) {
               double[] newPositionArray = positioner.getNextPosition();
-								//Exibe as coordenadas dos motes
-							System.out.println("Coordenada X "+newPositionArray[0]);
-							System.out.println("Coordenada Y "+newPositionArray[1]);
-							System.out.println("Coordenada Z "+newPositionArray[2]);
+
+//#############################################################################
++              try{
++              //Salva as coordenadas dos motes em arquivo no diretório contiki/tools/cooja/build/
++              System.setOut(new PrintStream(new FileOutputStream("coordenadas.h", true)));
++              System.out.println("Mote "+count_motes);
++              System.out.println("Coordenada X "+newPositionArray[0]);
++              System.out.println("Coordenada Y "+newPositionArray[1]);
++              System.out.println("Coordenada Z "+newPositionArray[2]);
++              count_motes++;
++
++              }catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");}; 
++
++//#############################################################################
 
               if (newPositionArray.length >= 3) {
                 newPosition.setCoordinates(newPositionArray[0],
