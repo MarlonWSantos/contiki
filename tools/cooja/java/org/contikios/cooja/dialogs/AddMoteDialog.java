@@ -512,18 +512,18 @@ public class AddMoteDialog extends JDialog {
               double[] newPositionArray = positioner.getNextPosition();
 
 //#############################################################################
-+              try{
-+              //Salva as coordenadas dos motes em arquivo no diretório contiki/tools/cooja/build/
-+              System.setOut(new PrintStream(new FileOutputStream("coordenadas.h", true)));
-+              System.out.println("Mote "+count_motes);
-+              System.out.println("Coordenada X "+newPositionArray[0]);
-+              System.out.println("Coordenada Y "+newPositionArray[1]);
-+              System.out.println("Coordenada Z "+newPositionArray[2]);
-+              count_motes++;
-+
-+              }catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");}; 
-+
-+//#############################################################################
+              try{
+              //Salva as coordenadas dos motes em arquivo no diretório contiki/tools/cooja/build/
+              System.setOut(new PrintStream(new FileOutputStream("coordenadas.h", true)));
+              System.out.println("Mote "+count_motes);
+              System.out.println("Coordenada X "+newPositionArray[0]);
+              System.out.println("Coordenada Y "+newPositionArray[1]);
+              System.out.println("Coordenada Z "+newPositionArray[2]);
+              count_motes++;
+
+              }catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");}; 
+
+//#############################################################################
 
               if (newPositionArray.length >= 3) {
                 newPosition.setCoordinates(newPositionArray[0],
