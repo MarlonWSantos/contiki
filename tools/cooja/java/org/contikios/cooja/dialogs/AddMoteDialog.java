@@ -70,15 +70,6 @@ import org.contikios.cooja.Simulation;
 import org.contikios.cooja.interfaces.MoteID;
 import org.contikios.cooja.interfaces.Position;
 
-//#############################################################################
-
-
-  //Permite salvar em arquivo os outputs do System.out.println
-import java.io.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-//###############################################################################
 
 
 /**
@@ -89,11 +80,8 @@ import java.io.PrintStream;
 public class AddMoteDialog extends JDialog {
 
 //#############################################################################
-
   //Contador de motes criados
        public static int count_motes=1;
-
-
 //#############################################################################
 
 
@@ -501,6 +489,37 @@ public class AddMoteDialog extends JDialog {
                   ((Number) startZ.getValue()).doubleValue(), ((Number) endZ
                       .getValue()).doubleValue());
 
+
+
+
+
+//#############################################################################
+               ListEvents obj = new ListEvents();
+
+							String BEGIN_X = (startX.getValue()).toString();
+							String  END_X = (endX.getValue()).toString();
+							String BEGIN_Y = (startY.getValue()).toString();
+							String  END_Y = (endY.getValue()).toString();
+							String BEGIN_Z = (startZ.getValue()).toString();
+              String END_Z = (endZ.getValue()).toString();
+
+              int startX = Integer.parseInt(BEGIN_X);
+              int endX = Integer.parseInt(END_X);
+              int startY = Integer.parseInt(BEGIN_Y);
+              int endY =  Integer.parseInt(END_Y);
+              int startZ = Integer.parseInt(BEGIN_Z);
+              int endZ = Integer.parseInt(END_Z);;
+ 
+              obj.set_area(startX,endX,startY,endY,startZ,endZ); 
+
+              obj.set_count_motes(newMotes.size());
+            
+//#############################################################################
+
+
+
+
+
           if (positioner == null) {
             logger.fatal("Could not create positioner");
             return;
@@ -511,19 +530,18 @@ public class AddMoteDialog extends JDialog {
             if (newPosition != null) {
               double[] newPositionArray = positioner.getNextPosition();
 
-//#############################################################################
-              try{
-              //Salva as coordenadas dos motes em arquivo no diretório contiki/tools/cooja/build/
-              System.setOut(new PrintStream(new FileOutputStream("coordenadas.h", true)));
-              System.out.println("Mote "+count_motes);
-              System.out.println("Coordenada X "+newPositionArray[0]);
-              System.out.println("Coordenada Y "+newPositionArray[1]);
-              System.out.println("Coordenada Z "+newPositionArray[2]);
-              count_motes++;
 
-              }catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");}; 
+
 
 //#############################################################################
+
+              obj.set_id_mote(i);
+              obj.set_coordenates(newPositionArray[0],newPositionArray[1],newPositionArray[2]);  
+            
+//#############################################################################
+
+
+
 
               if (newPositionArray.length >= 3) {
                 newPosition.setCoordinates(newPositionArray[0],
@@ -538,6 +556,19 @@ public class AddMoteDialog extends JDialog {
               }
             }
           }
+
+
+
+
+
+//#############################################################################
+             obj.set_time(newMotes.size());
+             obj.save_events();
+             obj.save_coordenate();
+//#############################################################################
+
+
+
 
           /* Set unique mote id's for all new motes
            * TODO ID should be provided differently; not rely on the unsafe MoteID interface */

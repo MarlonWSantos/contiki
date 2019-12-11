@@ -141,7 +141,6 @@ import org.contikios.cooja.plugins.SimControl;
 import org.contikios.cooja.plugins.SimInformation;
 import org.contikios.cooja.util.ExecuteJAR;
 import org.contikios.cooja.util.ScnObservable;
-
 /**
  * Main file of COOJA Simulator. Typically contains a visualizer for the
  * simulator, but can also be started without visualizer.
