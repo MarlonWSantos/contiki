@@ -79,12 +79,6 @@ import org.contikios.cooja.interfaces.Position;
  */
 public class AddMoteDialog extends JDialog {
 
-//#############################################################################
-  //Contador de motes criados
-       public static int count_motes=1;
-//#############################################################################
-
-
 
 
   private static final long serialVersionUID = 1L;
@@ -536,7 +530,7 @@ public class AddMoteDialog extends JDialog {
 //#############################################################################
 
               obj.set_id_mote(i);
-              obj.set_coordenates(newPositionArray[0],newPositionArray[1],newPositionArray[2]);  
+              obj.set_coordinates(newPositionArray[0],newPositionArray[1],newPositionArray[2]);  
             
 //#############################################################################
 
@@ -564,7 +558,7 @@ public class AddMoteDialog extends JDialog {
 //#############################################################################
              obj.set_time(newMotes.size());
              obj.save_events();
-             obj.save_coordenate();
+             obj.save_coordinate();
 //#############################################################################
 
 

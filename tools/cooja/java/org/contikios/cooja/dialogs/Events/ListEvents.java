@@ -32,9 +32,9 @@ public class ListEvents{
   private int time,count_motes;
   private int id_mote;
 
-  private double[] coordenateX;
-	private double[] coordenateY;
-  private double[] coordenateZ;
+  private double[] coordinateX;
+	private double[] coordinateY;
+  private double[] coordinateZ;
   private int startX,endX,startY,endY,startZ,endZ;
 
   public void set_time(int time){
@@ -61,18 +61,18 @@ public class ListEvents{
     return count_motes;
   }
 
-  public void set_coordenates(double coordenateX,double coordenateY,double coordenateZ){
+  public void set_coordinates(double coordinateX,double coordinateY,double coordinateZ){
     if(get_id_mote()==0){
       int n = get_count_motes();
-      this.coordenateX = new double[n];
-      this.coordenateY = new double[n];
-      this.coordenateZ = new double[n];
+      this.coordinateX = new double[n];
+      this.coordinateY = new double[n];
+      this.coordinateZ = new double[n];
     }
 
     int i=get_id_mote();
-    this.coordenateX[i]=coordenateX;
-    this.coordenateY[i]=coordenateY;
-    this.coordenateZ[i]=coordenateZ;
+    this.coordinateX[i]=coordinateX;
+    this.coordinateY[i]=coordinateY;
+    this.coordinateZ[i]=coordinateZ;
   }
 
   public void set_area(int startX,int endX,int startY,int endY,int startZ,int endZ){
@@ -108,18 +108,18 @@ public class ListEvents{
     return endZ;
   }
 
-  public void save_coordenate(){
+  public void save_coordinate(){
 
       try{
-        System.setOut(new PrintStream(new FileOutputStream("coordenadas.h",false)));
-        
-        System.out.println("float motes_coordenates["+get_count_motes()+"][3]={");
-        read_coordenates();
+        System.setOut(new PrintStream(new FileOutputStream("coordinates.h",false)));
+        System.out.println("int count_motes="+get_count_motes()+";");  
+        System.out.println("double motes_coordinates["+get_count_motes()+"][3]={");
+        read_coordinates();
         System.out.println("};");
       }catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");};
   }     
 
-  public void read_coordenates(){
+  public void read_coordinates(){
     for (int i=0;i<get_count_motes();i++){  
       if(i<get_count_motes()-1){
 
@@ -131,22 +131,22 @@ public class ListEvents{
   }
 
   public double get_coordX(int i){
-    return coordenateX[i];
+    return coordinateX[i];
   }
 
   public double get_coordY(int i){
-    return coordenateY[i];
+    return coordinateY[i];
   }
 
   public double get_coordZ(int i){
-    return coordenateZ[i];
+    return coordinateZ[i];
   }
 
   public void save_events(){
     try{
       System.setOut(new PrintStream(new FileOutputStream("events.h", false)));
-      System.out.println("int coordenates=3;");
-      System.out.println("float events_coordenates["+get_time()+"][3]={");
+      System.out.println("int coordinates=3;");
+      System.out.println("double events_coordinates["+get_time()+"][3]={");
       generate_events();
       System.out.println("};\n");
 

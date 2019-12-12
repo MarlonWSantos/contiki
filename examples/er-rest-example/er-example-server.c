@@ -43,8 +43,9 @@
 #include "contiki-net.h"
 #include "rest-engine.h"
 #include "sys/node-id.h"
-#include "Eventos.h"
-
+#include "coordinates.h"
+#include "events.h"
+#include <math.h>
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
 #include "powertrace.h"
@@ -211,35 +212,38 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
 PROCESS_THREAD(test_timer_process, ev, data){
 	PROCESS_BEGIN();
 	static struct etimer et;
+
+
+  int my_id;
+  double my_coordinate[3];
+
+  long long int coordX;
+  long long int coordY;
+  long long int coordZ;
+
 	while(1) {
 		etimer_set(&et, CLOCK_SECOND*SECONDS);
 		PROCESS_WAIT_EVENT();
      
-		 	
-			
-			//Indicador de cada posição no vetor de motes
-		int mote;
-	
-			//Lê cada posição do vetor com os valores dos motes escolhidos até o último mote de cada evento
-		for(mote=0;mote<numero_Motes;mote++){
-
-				//Se o valor do mote for igual ao valor de um dos motes indicados no vetor		
-			if(node_id == id_nodes_ev[event_count][mote]){
-
-				//Exibe que este mote foi escolhido pelo vetor de eventos
-			printf("Mote escolhido\n");		
-			printf("Numero de motes por evento: %d\n",numero_Motes);
-
-			}
-		}
-				//Incrementa 1 para o evento no próximo minuto
-			event_count++;
+  my_id=node_id-2;
+  my_coordinate[0]=motes_coordinates[my_id][0];
+  my_coordinate[1]=motes_coordinates[my_id][1];
+  my_coordinate[2]=motes_coordinates[my_id][2];
 
 
-		if(etimer_expired(&et)) {
-		printf("etimer expirou\n");
-		etimer_reset(&et);
-		}
+    if(etimer_expired(&et)) {
+	    printf("etimer expirou\n");
+	    etimer_reset(&et);
+	  }
+
+
+     coordX=my_coordinate[0]*100;
+     coordY=my_coordinate[1]*100;
+     coordZ=my_coordinate[2]*100;
+
+     printf("Coordenada X: %lld\n",coordX);
+     printf("Coordenada Y: %lld\n",coordY);
+     printf("Coordenada Z: %lld\n",coordZ);
 	}
 PROCESS_END();
 }
