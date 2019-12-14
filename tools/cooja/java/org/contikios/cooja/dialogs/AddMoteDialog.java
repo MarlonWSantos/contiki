@@ -488,15 +488,18 @@ public class AddMoteDialog extends JDialog {
 
 
 //#############################################################################
+                 //Cria obj da classe ListEvents
                ListEvents obj = new ListEvents();
 
-							String BEGIN_X = (startX.getValue()).toString();
-							String  END_X = (endX.getValue()).toString();
-							String BEGIN_Y = (startY.getValue()).toString();
-							String  END_Y = (endY.getValue()).toString();
-							String BEGIN_Z = (startZ.getValue()).toString();
+                //Captura os limites inferiores e superiores de X,Y e Z do cooja
+              String BEGIN_X = (startX.getValue()).toString();
+              String  END_X = (endX.getValue()).toString();
+              String BEGIN_Y = (startY.getValue()).toString();
+              String  END_Y = (endY.getValue()).toString();
+              String BEGIN_Z = (startZ.getValue()).toString();
               String END_Z = (endZ.getValue()).toString();
 
+                //Converte de String pra Int os limites inferiores e superiores
               int startX = Integer.parseInt(BEGIN_X);
               int endX = Integer.parseInt(END_X);
               int startY = Integer.parseInt(BEGIN_Y);
@@ -504,8 +507,10 @@ public class AddMoteDialog extends JDialog {
               int startZ = Integer.parseInt(BEGIN_Z);
               int endZ = Integer.parseInt(END_Z);;
  
+                //Envia pra classe ListEvents os limites capturados do cooja
               obj.set_area(startX,endX,startY,endY,startZ,endZ); 
 
+                //Envia pra classe ListEvents o número de motes criados
               obj.set_count_motes(newMotes.size());
             
 //#############################################################################
@@ -528,8 +533,10 @@ public class AddMoteDialog extends JDialog {
 
 
 //#############################################################################
-
+                //Envia pra classe ListEvents o id de cada mote
               obj.set_id_mote(i);
+
+                //Envia pra classe ListEvents coordenadas X,Y e Z de cada mote
               obj.set_coordinates(newPositionArray[0],newPositionArray[1],newPositionArray[2]);  
             
 //#############################################################################
@@ -556,9 +563,15 @@ public class AddMoteDialog extends JDialog {
 
 
 //#############################################################################
+               //Envia pra classe ListEvents o número de motes
              obj.set_time(newMotes.size());
+
+               //Chama a função que salva os eventos em arquivo
              obj.save_events();
+
+               //Chama a função que salva as coordenadas em arquivo
              obj.save_coordinate();
+
 //#############################################################################
 
 

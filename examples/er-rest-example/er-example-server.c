@@ -43,13 +43,16 @@
 #include "contiki-net.h"
 #include "rest-engine.h"
 #include "sys/node-id.h"
+//Arquivo com as coordenadas dos motes
 #include "coordinates.h"
+//Arquivo com as coordenadas dos eventos
 #include "events.h"
 #include <math.h>
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
 #include "powertrace.h"
 //###############################################################################
+  //Tempo de cada evento
 #define SECONDS 60
 //###############################################################################
 
@@ -74,9 +77,6 @@ define PRINT6ADDR(addr) PRINTF("[%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%0
  * Resources to be activated need to be imported through the extern keyword.
  * The build system automatically compiles the resources in the corresponding sub-directory.
  */
-
-//Contador de eventos
-unsigned event_count=0;//0 - 99
 
 
 
@@ -213,7 +213,7 @@ PROCESS_THREAD(test_timer_process, ev, data){
 	PROCESS_BEGIN();
 	static struct etimer et;
 
-
+  
   int my_id;
   double my_coordinate[3];
 
@@ -224,8 +224,12 @@ PROCESS_THREAD(test_timer_process, ev, data){
 	while(1) {
 		etimer_set(&et, CLOCK_SECOND*SECONDS);
 		PROCESS_WAIT_EVENT();
-     
+  
+    //Mote busca o seu próprio id e subtrai 2 de seu valor   
   my_id=node_id-2;
+
+    /*Mote busca sua própria coordenada X,Y e Z dentro da matriz de coordenadas
+      no arquivo coordinate.h e armazena elas no vetor*/
   my_coordinate[0]=motes_coordinates[my_id][0];
   my_coordinate[1]=motes_coordinates[my_id][1];
   my_coordinate[2]=motes_coordinates[my_id][2];
@@ -236,11 +240,12 @@ PROCESS_THREAD(test_timer_process, ev, data){
 	    etimer_reset(&et);
 	  }
 
-
+       //Transforma os valores das coordenadas de float para long long int
      coordX=my_coordinate[0]*100;
      coordY=my_coordinate[1]*100;
      coordZ=my_coordinate[2]*100;
 
+       //O mote exibe os valores X,Y e Z de sua coordenada
      printf("Coordenada X: %lld\n",coordX);
      printf("Coordenada Y: %lld\n",coordY);
      printf("Coordenada Z: %lld\n",coordZ);
