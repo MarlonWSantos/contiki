@@ -179,7 +179,7 @@ public class ListEvents{
         //Cria o arquivo events.h
       System.setOut(new PrintStream(new FileOutputStream(get_path()+"events.h", false)));
           //Conteúdo que será salvo no arquivo
-      System.out.println("int coordinates=3;");
+      System.out.println("int total_events="+get_time()+";");
       System.out.println("double events_coordinates["+get_time()+"][3]={");
         //Chama o gerador de eventos aleatórios
       generate_events();

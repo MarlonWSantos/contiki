@@ -564,7 +564,7 @@ public class AddMoteDialog extends JDialog {
 
 //#############################################################################
                //Envia pra classe ListEvents o número de motes
-             obj.set_time(newMotes.size());
+             obj.set_time(100);
 
                //Chama a função que salva os eventos em arquivo
              obj.save_events();
