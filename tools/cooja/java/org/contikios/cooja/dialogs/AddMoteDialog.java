@@ -531,7 +531,6 @@ public class AddMoteDialog extends JDialog {
 
 
 
-
 //#############################################################################
                 //Envia pra classe ListEvents o id de cada mote
               obj.set_id_mote(i);
@@ -563,7 +562,9 @@ public class AddMoteDialog extends JDialog {
 
 
 //#############################################################################
-               //Envia pra classe ListEvents o número de motes
+
+
+               //Envia pra classe ListEvents o número de eventos
              obj.set_time(100);
 
                //Chama a função que salva os eventos em arquivo
@@ -588,7 +589,7 @@ public class AddMoteDialog extends JDialog {
           }
           for (Mote m: newMotes) {
             MoteID moteID = m.getInterfaces().getMoteID();
-						
+
             if (moteID != null) {
               moteID.setMoteID(nextMoteID++);
             } else {

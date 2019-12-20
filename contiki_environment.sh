@@ -3,7 +3,7 @@
 #
 #
 #		Contiki Environment prepare the local environment to run contiki 
-#		Copyright (C) 2019 Marlon W. Santos
+#		Copyright (C) 2019 Marlon W. Santos <marlon.santos.santos@icen.ufpa.br>
 #
 #
 #	
@@ -21,6 +21,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 
+  #Caminho para o List Events dentro do contiki
 path_ListEvents="./tools/cooja/java/org/contikios/cooja/dialogs/Events/ListEvents.java"
 
   #Busca o path dentro do arquivo ListEvents.java
@@ -28,7 +29,7 @@ function path_on_file(){
   file_path=`grep -o /.*contiki $path_ListEvents`
 }
 
-	#Busca o caminho do diretório local
+	#Busca o path do diretório local
 function find_local_path(){
   local_path=`pwd`
 }
@@ -38,6 +39,17 @@ function change_path(){
   sed -i "s;$file_path;$local_path;g" $path_ListEvents
 }
 
+  #Instala os submódulos necessário para rodar o contiki pela primeira vez
+function install_submodules(){
+  git submodule update --init
+}
+
+
 path_on_file
+
 find_local_path
+
 change_path
+
+install_submodules
+
