@@ -2,8 +2,8 @@
 #
 #
 #
-#		Contiki Environment prepare the local environment to run contiki 
-#		Copyright (C) 2019 Marlon W. Santos <marlon.santos.santos@icen.ufpa.br>
+#   Contiki Environment prepare the local environment to run contiki 
+#   Copyright (C) 2019 Marlon W. Santos <marlon.santos.santos@icen.ufpa.br>
 #
 #
 #	
@@ -45,6 +45,7 @@ function install_submodules(){
 }
 
 
+  #Chamadas para as funções
 path_on_file
 
 find_local_path
