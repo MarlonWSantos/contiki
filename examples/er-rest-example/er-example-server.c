@@ -48,7 +48,8 @@
 #include "coordinates.h"
 //Arquivo com as coordenadas dos eventos
 #include "events.h"
-
+//Arquivo com flag sobre evento e a informação sobre ele
+#include "resources/res-hello.h"
 
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
@@ -287,11 +288,22 @@ PROCESS_THREAD(test_timer_process, ev, data){
 
         //Se a distancia calculada for menor igual ao range, o mote exibe aviso
       if((distance/100)<=RANGE){
+          //Ativa o flag avisando sobre evento
+        is_event=1;
+
         printf("DETECTADO EVENTO\n");
+
+        char str[100];
+
+          //Informação sobre o evento detectado
+        snprintf(str,100,"\nMote %d:Evento a %um de distancia\n",node_id, distance/100);
+        printf("String: %s\n",str);
+
+          //Copia a informação do evento para array em res-hello.h
+        memcpy(info_event,str,sizeof(str));
       }
 
     }
-
 
       //Acrescenta 1 para o próximo evento
     event_count++;  
