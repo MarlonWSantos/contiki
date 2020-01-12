@@ -297,7 +297,7 @@ PROCESS_THREAD(test_timer_process, ev, data){
 
           //Informação sobre o evento detectado
         snprintf(str,100,"\nMote %d:Evento a %um de distancia\n",node_id, distance/100);
-        printf("String: %s\n",str);
+//        printf("String: %s\n",str);
 
           //Copia a informação do evento para array em res-hello.h
         memcpy(info_event,str,sizeof(str));
