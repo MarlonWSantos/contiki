@@ -1,6 +1,6 @@
 
 /*     List events is a generator of events
-*      Copyright (c) 2019 Marlon W. Santos <user.santos.santos@icen.ufpa.br>
+*      Copyright (c) 2019 Marlon W. Santos <marlon.santos.santos@icen.ufpa.br>
 *
 *    This program is free software: you can redistribute it and/or modify
 *    it under the terms of the GNU General Public License as published by
