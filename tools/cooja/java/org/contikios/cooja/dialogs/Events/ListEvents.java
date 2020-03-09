@@ -38,7 +38,7 @@ public class ListEvents{
   private int startX,endX,startY,endY,startZ,endZ;
 
     //Armazena caminho onde os arquivos.h serão salvos
-  private String path="/home/user/Github/contiki/examples/er-rest-example/";
+  private String path="/home/marlon/contiki/examples/er-rest-example/";
 
     //Armazena o número de vezes que os eventos se repetirão
   public void set_time(int time){

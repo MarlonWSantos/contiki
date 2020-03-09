@@ -1,6 +1,11 @@
-int count_motes=2;
-double motes_coordinates[2][3]={
-{97.97860265226369,99.42237425995785,0.0},
-{97.89792960674484,98.00604466217963,0.0}
+int count_motes=1;
+double motes_coordinates[1][3]={
+{24.134747989137672,12.025303117652697,0.0}
 };
+onServerStarted
+onServerStarted
+onServerStarted
+onServerStarted
+onServerStarted
+onServerStarted
 onServerStarted
