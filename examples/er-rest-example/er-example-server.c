@@ -50,6 +50,8 @@
 #include "events.h"
 //Arquivo com flag sobre evento e a informação sobre ele
 #include "resources/res-hello.h"
+//Arquivo com range de detecção dos eventos
+#include "resources/res-range-events.h"
 
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
@@ -57,9 +59,6 @@
 //###############################################################################
   //Tempo de cada evento
 #define SECONDS 60
-
-  //Área de cobertura de cada mote
-#define RANGE 10
 
 //###############################################################################
 
@@ -102,7 +101,9 @@ extern resource_t
   res_push,
   res_event,
   res_sub,
-  res_b1_sep_b2;
+  res_b1_sep_b2,
+  res_range_events;
+
 #if PLATFORM_HAS_LEDS
 extern resource_t res_leds, res_toggle;
 #endif
@@ -172,6 +173,7 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
    * WARNING: Activating twice only means alternate path, not two instances!
    * All static variables are the same for each URI path.
    */
+  rest_activate_resource(&res_range_events,"res_range_events");
   rest_activate_resource(&res_hello, "test/hello");
 /*  rest_activate_resource(&res_mirror, "debug/mirror"); */
 /*  rest_activate_resource(&res_chunks, "test/chunks"); */
@@ -225,6 +227,11 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
 //###############################################################################
 PROCESS_THREAD(test_timer_process, ev, data){
 	PROCESS_BEGIN();
+
+
+	  //Área de detecção de eventos cada mote
+	range=10;
+
 	static struct etimer et;
 
     //Armazena o id do próprio mote  
@@ -287,7 +294,7 @@ PROCESS_THREAD(test_timer_process, ev, data){
       printf("Distancia: %u\n",distance);
 
         //Se a distancia calculada for menor igual ao range, o mote exibe aviso
-      if((distance/100)<=RANGE){
+      if((distance/100)<=range){
           //Ativa o flag avisando sobre evento
         is_event=1;
 
