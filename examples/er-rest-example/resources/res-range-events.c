@@ -35,6 +35,7 @@
  *      Res-range-events
  * \author
  *      Matthias Kovatsch <kovatsch@inf.ethz.ch>
+ * \author
  *      Marlon W. Santos  <marlon.santos.santos@icen.ufpa.br>
  */
 
