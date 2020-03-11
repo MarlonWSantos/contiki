@@ -1,6 +1,6 @@
 
 /*     List events is a generator of events
-*      Copyright (c) 2019 Marlon W. Santos <marlon.santos.santos@icen.ufpa.br>
+*      Copyright (c) 2019,2020 Marlon W. Santos <marlon.santos.santos@icen.ufpa.br>
 *
 *    This program is free software: you can redistribute it and/or modify
 *    it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 *    GNU General Public License for more details.
 *
 *    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <https://www.gnu.org/licenses/>5.
+*    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
 */
 
@@ -30,15 +30,14 @@ import java.util.Random;
 public class ListEvents{
 
   private int time,count_motes;
-  private int id_mote;
-
+  private int id_mote; 
   private double[] coordinateX;
   private double[] coordinateY;
   private double[] coordinateZ;
   private int startX,endX,startY,endY,startZ,endZ;
-
+  
     //Armazena caminho onde os arquivos.h serão salvos
-  private String path="/home/marlon/contiki/examples/er-rest-example/";
+  private String path="/home/user/contiki/examples/er-rest-example/";
 
     //Armazena o número de vezes que os eventos se repetirão
   public void set_time(int time){
@@ -130,6 +129,27 @@ public class ListEvents{
     return endZ;
   }
 
+
+    //Salva as coordenadas dos motes em arquivo para uso no cálculo das métricas
+  public void save_positions(){
+
+      try{
+          //Cria o arquivo em /tmp/positions.txt
+        System.setOut(new PrintStream(new FileOutputStream("/tmp/positions.txt",false)));
+	 
+          //Busca as coordenadas dos motes para salvar no arquivo
+	for(int i=0;i<get_count_motes();i++){
+	    System.out.println(get_coordX(i)+","+get_coordY(i)+","+get_coordZ(i));	  
+	}
+
+	  //Área onde os motes estão posicionados
+	System.out.println(get_startX()+","+get_endX());
+	System.out.println(get_startY()+","+get_endY());
+	System.out.println(get_startZ()+","+get_endZ());
+
+      }catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");};
+  }  
+
     //Salva as coordenadas dos motes em arquivo
   public void save_coordinate(){
 
@@ -220,4 +240,4 @@ public class ListEvents{
   public String get_path(){
     return path;
   }
-}
+   
