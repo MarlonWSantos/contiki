@@ -573,6 +573,9 @@ public class AddMoteDialog extends JDialog {
                //Chama a função que salva as coordenadas em arquivo
              obj.save_coordinate();
 
+               //Salva as posições em arquivo CSV
+             obj.save_positions_in_CSV();
+
 //#############################################################################
 
 
