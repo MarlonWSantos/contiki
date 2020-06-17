@@ -46,7 +46,7 @@ function install_submodules(){
 
 
  #Baixa o mps430
-function download_mps403(){
+function download_mps430(){
  git clone https://github.com/MarlonWSantos/msp430-gcc-4.7.3.git
 }
 
