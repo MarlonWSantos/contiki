@@ -37,7 +37,7 @@ public class ListEvents{
 	private int startX,endX,startY,endY,startZ,endZ;
 
 	//Armazena caminho onde os arquivos.h serão salvos
-	private String path="/home/marlon/contiki/examples/er-rest-example/";
+	private String path="/opt/contiki/examples/er-rest-example/";
 
 	//Armazena o número de vezes que os eventos se repetirão
 	public void set_time(int time){
@@ -148,7 +148,7 @@ public class ListEvents{
 				endIP++;	  
 			}
 
-		}catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");};
+		}catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo motes_coordinates.csv!");};
 	}  
 
 	//Salva as coordenadas dos motes em arquivo
@@ -164,7 +164,7 @@ public class ListEvents{
 			//Busca as coordenadas dos motes para salvar no arquivo
 			read_coordinates();
 			System.out.println("};");
-		}catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");};
+		}catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo coordinates.h!");};
 	}     
 
 	//Lê as coordenadas dos motes armazenadas nos vetores coordinate
@@ -206,7 +206,7 @@ public class ListEvents{
 			generate_events();
 			System.out.println("};\n");
 
-		}catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo!");}; 
+		}catch(FileNotFoundException ex){System.out.println("Erro ao criar arquivo events.h!");}; 
 	}
 
 	//Gera os eventos aleatórios
