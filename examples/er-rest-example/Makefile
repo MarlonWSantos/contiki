@@ -22,6 +22,7 @@ endif
 
 PROJECTDIRS += $(REST_RESOURCES_DIR)
 PROJECT_SOURCEFILES += $(REST_RESOURCES_FILES)
+PROJECT_SOURCEFILES += load-coordinate.c
 
 # linker optimizations
 SMALL=1
