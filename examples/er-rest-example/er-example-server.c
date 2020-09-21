@@ -34,6 +34,7 @@
  *      Erbium (Er) REST Engine example.
  * \author
  *      Matthias Kovatsch <kovatsch@inf.ethz.ch>
+ * 	Marlon W. Santos  <marlon.santos.santos@icen.ufpa.br>
  */
 
 #include <stdio.h>
@@ -44,14 +45,14 @@
 #include "rest-engine.h"
 #include "sys/node-id.h"
 #include <math.h>
-//Arquivo com as coordenadas dos motes
-#include "coordinates.h"
-//Arquivo com as coordenadas dos eventos
-#include "events.h"
 //Arquivo com flag sobre evento e a informação sobre ele
 #include "resources/res-hello.h"
 //Arquivo com range de detecção dos eventos
 #include "resources/res-range-events.h"
+//Arquivo com os arrays de coordenadas
+#include "load-coordinate.h"
+//Arquivo com os calculos das coordenadas
+#include "calculate-distance.h"
 
 //Ariker> add this line
 //#include "../apps/powertrace/powertrace.h"
@@ -59,9 +60,7 @@
 //###############################################################################
   //Tempo de cada evento
 #define SECONDS 60
-
 //###############################################################################
-
 
 #if PLATFORM_HAS_BUTTON
 #include "dev/button-sensor.h"
@@ -85,13 +84,8 @@ define PRINT6ADDR(addr) PRINTF("[%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%0
  */
 
 //#############################################################################
-
 unsigned int event_count=0; 
-
-
 //#############################################################################
-
-
 
 extern resource_t
   res_hello,
@@ -125,13 +119,9 @@ extern resource_t res_radio;
 extern resource_t res_sht11;
 #endif
 */
-/*-------------------------------------------------*/
-PROCESS(test_timer_process, "Test timer");
-//AUTOSTART_PROCESSES(&test_timer_process);
-/*-------------------------------------------------*/
 
 PROCESS(er_example_server, "Erbium Example Server");
-AUTOSTART_PROCESSES(&er_example_server,&test_timer_process);
+AUTOSTART_PROCESSES(&er_example_server);
 
 PROCESS_THREAD(er_example_server, ev, data)
 {
@@ -146,12 +136,9 @@ unsigned variation = 2;//0 - 99
 powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
 //powertrace_start(CLOCK_SECOND * 10);
 
-
   PROCESS_PAUSE();
 
   PRINTF("Starting Erbium Example Server\n");
-
-
 
 #ifdef RF_CHANNEL
   PRINTF("RF channel: %u\n", RF_CHANNEL);
@@ -190,111 +177,28 @@ powertrace_start(CLOCK_SECOND * seconds, seconds, fixed_perc_energy, variation);
   rest_activate_resource(&res_light, "sensors/light"); 
   SENSORS_ACTIVATE(light_sensor);  
 #endif
-/*
-#if PLATFORM_HAS_BATTERY
-  rest_activate_resource(&res_battery, "sensors/battery");  
-  SENSORS_ACTIVATE(battery_sensor);  
-#endif
-#if PLATFORM_HAS_RADIO
-  rest_activate_resource(&res_radio, "sensors/radio");  
-  SENSORS_ACTIVATE(radio_sensor);  
-#endif
-#if PLATFORM_HAS_SHT11
-  rest_activate_resource(&res_sht11, "sensors/sht11");  
-  SENSORS_ACTIVATE(sht11_sensor);  
-#endif
-*/
-
-  /* Define application-specific events here. */
-  while(1) {
-    PROCESS_WAIT_EVENT();
-#if PLATFORM_HAS_BUTTON
-    if(ev == sensors_event && data == &button_sensor) {
-      PRINTF("*******BUTTON*******\n");
-
-      /* Call the event_handler for this application-specific event. */
-      res_event.trigger();
-
-      /* Also call the separate response example handler. */
-      res_separate.resume();
-    }
-#endif /* PLATFORM_HAS_BUTTON */
-  }                             /* while (1) */
-
-  PROCESS_END();
-}
-
-//###############################################################################
-PROCESS_THREAD(test_timer_process, ev, data){
-	PROCESS_BEGIN();
 
 
-	  //Área de detecção de eventos cada mote
-	range=10;
+	 //Área de detecção de eventos cada mote
+	range=60;
 
 	static struct etimer et;
-
-    //Armazena o id do próprio mote  
-  int my_id;
-
-    //Vetor para as coordenadas X,Y e Z do próprio mote
-  unsigned int my_coordinate[3];
-
-    //Vetor para as coordenadas dos eventos
-  unsigned int event[3];
-
-    //Vetor para armazenar a diferença na subtração entre as coordenadas
-  unsigned int diff[3];
 
 	while(1) {
 		etimer_set(&et, CLOCK_SECOND*SECONDS);
 		PROCESS_WAIT_EVENT();
-  
-      //Mote busca o seu próprio id e subtrai 2 de seu valor   
-    my_id=node_id-2;
 
-    /*Mote busca sua própria coordenada X,Y e Z dentro da matriz de coordenadas
-      no arquivo coordinate.h e armazena elas no vetor*/
-    my_coordinate[0]=(unsigned int)(motes_coordinates[my_id][0]*100);
-    my_coordinate[1]=(unsigned int)(motes_coordinates[my_id][1]*100);
-    my_coordinate[2]=(unsigned int)(motes_coordinates[my_id][2]*100);
-
-      //O mote exibe os valores X,Y e Z de sua coordenada
-    printf("Coordenada X: %u\n",my_coordinate[0]);
-    printf("Coordenada Y: %u\n",my_coordinate[1]);
-    printf("Coordenada Z: %u\n",my_coordinate[2]);
-
-      //Se valor do contador de eventos for menor que total de eventos
-    if(event_count<total_events){
-         /*Mote busca a coordenada X,Y e Z dentro da matriz de eventos
-          no arquivo events.h e armazena elas no vetor*/
-      event[0]=(unsigned int)(events_coordinates[event_count][0]*100);
-      event[1]=(unsigned int)(events_coordinates[event_count][1]*100);
-      event[2]=(unsigned int)(events_coordinates[event_count][2]*100);
-
-        //Mote exibe os valores X,Y e Z do evento
-      printf("Coordenada X do evento: %u\n",event[0]);
-      printf("Coordenada Y do evento: %u\n",event[1]);
-      printf("Coordenada Z do evento: %u\n",event[2]);
-
-      int i;
-
-        //Calcula a diferença entre coordenadas X,Y e Z do mote e do evento
-      for(i=0;i<3;i++){
-        if(event[i]>my_coordinate[i]){
-          diff[i]= event[i]-my_coordinate[i];  
-        }else{
-          diff[i]=my_coordinate[i]-event[i];
-        }
-      }
-
-        //Calcula a distância euclidiana entre o mote e o evento
-      unsigned distance = (unsigned int)((sqrt(pow(diff[0],2)+pow(diff[1],2)+pow(diff[2],2))));
-
-      printf("Distancia: %u\n",distance);
+		load_id();  
+		load_coordinate_mote();
+		show_coordinate_mote();
+		load_coordinate_event(event_count);
+		show_coordinate_event();
+		calculate_difference();
+		int distance=euclidian_distance();
+		print_distance(distance);
 
         //Se a distancia calculada for menor igual ao range, o mote exibe aviso
-      if((distance/100)<=range){
+      if(distance<=range){
           //Ativa o flag avisando sobre evento
         is_event=1;
 
@@ -303,26 +207,20 @@ PROCESS_THREAD(test_timer_process, ev, data){
         char str[100];
 
           //Informação sobre o evento detectado
-        snprintf(str,100,"\nMote %d:Evento a %um de distancia\n",node_id, distance/100);
-        printf("String: %s\n",str);
+        snprintf(str,100,"Mote %d:Evento a %um de distancia\n",node_id, distance);
+        printf("%s",str);
 
           //Copia a informação do evento para array em res-hello.h
         memcpy(info_event,str,sizeof(str));
       }
-
-    }
-
       //Acrescenta 1 para o próximo evento
-    event_count++;  
-
+      event_count++;  
 
       //Se o tempo estimado expirar, reinicia a contagem
-    if(etimer_expired(&et)) {
-	    etimer_reset(&et);
-	  }
-
-
-	}
+      if(etimer_expired(&et)) {
+	etimer_reset(&et);
+      }
+    }
 PROCESS_END();
 }
 //###############################################################################
